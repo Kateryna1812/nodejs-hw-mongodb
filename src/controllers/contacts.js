@@ -25,7 +25,8 @@ export const getAllContactsController = async (req, res, next) => {
       sortBy,
       sortOrder,
       filter,
-    }, req.user._id); // Pass userId as a second argument
+      userId: req.user._id,
+    });
     res.status(200).json({
       status: res.statusCode,
       message: 'Successfully found contacts!',
@@ -45,7 +46,7 @@ export const getContactByIdController = async (req, res, next) => {
       message: 'Id is invalid',
     });
   }
-  const contact = await getContactById(contactId, req.user._id); // Pass userId as a second argument
+  const contact = await getContactById(req.user._id, contactId);
 
   if (!contact) {
     next(
@@ -62,7 +63,7 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const createContactController = async (req, res) => {
-  const photo = req.file;
+ const photo = req.file;
   let photoUrl;
   if (photo) {
     if (env('ENABLE_CLOUDINARY')==='true') {
@@ -84,6 +85,7 @@ export const createContactController = async (req, res) => {
   });
 };
 
+
 export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
 
@@ -98,7 +100,7 @@ export const patchContactController = async (req, res, next) => {
 
   }
 
-  const contact = await patchContact(contactId, req.user._id, { 
+  const contact = await patchContact(req.user._id, contactId, {
     ...req.body,
     photo: photoUrl,
   });
@@ -117,7 +119,7 @@ export const patchContactController = async (req, res, next) => {
 
 export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;
-  const contact = await deleteContact(contactId, req.user._id); // Pass userId as a second argument
+  const contact = await deleteContact(req.user._id, contactId);
   if (!contact) {
     next(createHttpError(404, 'Contact not found'));
     return;
