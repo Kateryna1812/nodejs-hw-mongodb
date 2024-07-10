@@ -78,14 +78,6 @@
           },
           {
             "in": "query",
-            "name": "userId",
-            "schema": {
-              "type": "string",
-              "example": "65e4decdd286b30065d54af9"
-            }
-          },
-          {
-            "in": "query",
             "name": "isFavourite",
             "schema": {
               "type": "boolean",
@@ -546,6 +538,11 @@
               "home",
               "work"
             ]
+          },
+          "userId": {
+            "description": "Authorisation ID",
+            "type": "string",
+            "example": "65e4decdd286b30065d54af9"
           },
           "photo": {
             "description": "Link to contact's photo",
